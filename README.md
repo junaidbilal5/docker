@@ -1,23 +1,35 @@
 # Flask App with Docker
 
-This project demonstrates how to build and run a simple **Python Flask web application inside a Docker container**.  
-It is a basic example to understand **containerization, Docker images, and port mapping**.
+This project demonstrates how to build and run a simple **Python Flask web application inside a Docker container**.
+
+The goal of this project is to understand the fundamentals of:
+
+* Containerization
+* Docker images
+* Docker containers
+* Port mapping
+* Docker image versioning
+* Publishing images to Docker Hub
+
+This is a **beginner-friendly Docker project** that helps developers learn how to package and run applications in containers.
 
 ---
 
-## Project Overview
+# Project Overview
 
 The application is a small Flask API with three endpoints:
 
-- `/` → Returns a welcome message  
-- `/health` → Health check endpoint  
-- `/info` → Information about the application  
+| Endpoint  | Description                       |
+| --------- | --------------------------------- |
+| `/`       | Returns a welcome message         |
+| `/health` | Health check endpoint             |
+| `/info`   | Information about the application |
 
-The app runs inside a Docker container and can be accessed through a mapped host port.
+The Flask application runs inside a Docker container and can be accessed via a mapped host port.
 
 ---
 
-## Project Structure
+# Project Structure
 
 ```
 docker/
@@ -30,9 +42,9 @@ docker/
 
 ---
 
-## Application Code
+# Application Code
 
-### `app.py`
+## `app.py`
 
 ```python
 from flask import Flask
@@ -57,9 +69,9 @@ if __name__ == "__main__":
 
 ---
 
-## Requirements
+# Requirements
 
-### `requirements.txt`
+## `requirements.txt`
 
 ```
 flask
@@ -67,9 +79,9 @@ flask
 
 ---
 
-## Docker Configuration
+# Docker Configuration
 
-### `Dockerfile`
+## Dockerfile
 
 ```dockerfile
 FROM python:3.8-slim
@@ -89,30 +101,43 @@ CMD ["python", "app.py"]
 
 ---
 
-## Build Docker Image
+# Build Docker Image
 
-Run the following command inside the project directory:
+Build the Docker image using the following command:
 
-```bash
+```
 docker build -t flask_image .
 ```
 
+You can also build a **versioned Docker image**:
+
+```
+docker build -t junaidbilal005/custom_flask_image:0.0.1 .
+```
+
+This creates a tagged image that can later be pushed to Docker Hub.
+
 ---
 
-## Run Docker Container
+# Run Docker Container
 
-```bash
-docker run -p 5001:5000 --name flask_container flask_image
+Run the container using:
+
+```
+docker run -d -p 5001:5000 --name flask_container flask_image
 ```
 
 Explanation:
 
-- `5001` → Host machine port  
-- `5000` → Port used by Flask inside the container
+| Option                   | Description                               |
+| ------------------------ | ----------------------------------------- |
+| `-d`                     | Run container in background               |
+| `-p 5001:5000`           | Maps host port 5001 → container port 5000 |
+| `--name flask_container` | Container name                            |
 
 ---
 
-## Access the Application
+# Access the Application
 
 Open your browser:
 
@@ -130,52 +155,121 @@ http://127.0.0.1:5001/info
 
 ---
 
-## Useful Docker Commands
+# Push Image to Docker Hub
 
-List containers
+Login to Docker Hub:
 
-```bash
+```
+docker login
+```
+
+Push the image:
+
+```
+docker push junaidbilal005/custom_flask_image:0.0.1
+```
+
+This allows others to pull and run your image.
+
+---
+
+# Run Container from Docker Hub Image
+
+```
+docker run -d -p 5001:5000 junaidbilal005/custom_flask_image:0.0.1
+```
+
+---
+
+# Useful Docker Commands
+
+List running containers
+
+```
 docker ps
 ```
 
 List all containers
 
-```bash
+```
 docker ps -a
+```
+
+List images
+
+```
+docker images
 ```
 
 Stop container
 
-```bash
+```
 docker stop flask_container
 ```
 
 Remove container
 
-```bash
+```
 docker rm flask_container
 ```
 
 Remove image
 
-```bash
+```
 docker rmi flask_image
 ```
 
 ---
 
-## Technologies Used
+# Troubleshooting
 
-- Python
-- Flask
-- Docker
+## Port Already in Use
+
+If you see an error like:
+
+```
+Bind for 0.0.0.0:5001 failed: port is already allocated
+```
+
+Check what is using the port:
+
+```
+lsof -i :5001
+```
+
+Or stop existing containers:
+
+```
+docker stop $(docker ps -aq)
+```
 
 ---
 
-## Author
+# Technologies Used
 
-**Junaid Bilal**  
-Senior Data Engineer  
+* Python
+* Flask
+* Docker
 
-GitHub:  
+---
+
+# Learning Goals
+
+This project demonstrates:
+
+* Running applications in containers
+* Creating Docker images
+* Managing containers
+* Port mapping
+* Docker image versioning
+* Publishing images to Docker Hub
+
+---
+
+# Author
+
+**Junaid Bilal**
+Senior Data Engineer
+
+GitHub
 https://github.com/junaidbilal5
